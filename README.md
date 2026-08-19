@@ -1,8 +1,8 @@
 # Hotel Room Booking
 
-A simple hotel room booking app. Customers can browse rooms, register, book, and save rooms. An admin can add, edit, and delete rooms.
+A simple hotel room booking app. Guests can browse rooms, register, save rooms, and book stays. An admin can add, edit, and delete rooms.
 
-This project is a work in progress. Folders and run commands will be filled in as each step is added.
+The frontend is React (Vite). The backend is Express with the native MongoDB driver.
 
 ## Required environment
 
@@ -15,6 +15,11 @@ This project is a work in progress. Folders and run commands will be filled in a
 ```
 hotel-booking/
 ├── server/          # Express API + native MongoDB driver
+│   ├── index.js
+│   ├── db.js
+│   ├── seed.js
+│   ├── .env.example
+│   └── routes/
 ├── client/          # React + Vite frontend
 │   ├── src/
 │   ├── index.html
@@ -28,9 +33,11 @@ hotel-booking/
 ## How to run the entire app
 
 1. Install **Node.js 18+**.
-2. Start **MongoDB** locally (or use a MongoDB Atlas URI).
-   - Local default: `mongodb://127.0.0.1:27017/hotel-booking`
-3. Start the API:
+
+2. Start **MongoDB** locally, or have a MongoDB Atlas URI ready.
+   - Local database URI: `mongodb://127.0.0.1:27017/hotel-booking`
+
+3. Start the API (terminal 1):
 
    ```bash
    cd hotel-booking/server
@@ -39,37 +46,16 @@ hotel-booking/
    npm run dev
    ```
 
-   The API runs at [http://localhost:5000](http://localhost:5000). Check it with [http://localhost:5000/api/health](http://localhost:5000/api/health). It should return `{ "ok": true, "db": "connected" }`.
+   The API is at [http://localhost:5000](http://localhost:5000).
+   Open [http://localhost:5000/api/health](http://localhost:5000/api/health) — it should return `{ "ok": true, "db": "connected" }`.
 
-   Auth endpoints:
-   - `POST /api/auth/register` — `{ "name", "email", "password" }` (customers)
-   - `POST /api/auth/login` — `{ "email", "password" }`
+   On first start, the server creates:
+   - an admin user from `server/.env` (`ADMIN_EMAIL`, `ADMIN_PASSWORD`)
+   - three sample rooms if the rooms collection is empty
 
-   Default admin (created on first start if missing):
-   - email: `admin@hotel.com`
-   - password: `admin123`
+   Change admin values in `.env` **before** the first start if you want different credentials.
 
-   Change these in `server/.env` (`ADMIN_EMAIL`, `ADMIN_PASSWORD`) before the first start if you want different values.
-
-   Room endpoints:
-   - `GET /api/rooms` — list rooms. `sort=asc` or `sort=desc` (by price). Optional `checkIn` and `checkOut` filter to rooms that still have availability.
-   - `GET /api/rooms/:id` — one room. Optional `checkIn` and `checkOut` add `availableCount`.
-   - `POST /api/rooms` — admin create. Body: `{ "userId", "name", "description", "price", "quantity", "amenities" }`
-   - `PUT /api/rooms/:id` — admin update. Body includes `userId` and any fields to change
-   - `DELETE /api/rooms/:id?userId=...` — admin delete
-
-   Three sample rooms are inserted if the rooms collection is empty.
-
-   Booking endpoints (send `userId` from login):
-   - `GET /api/bookings?userId=...` — that user's bookings
-   - `POST /api/bookings` — `{ "userId", "roomId", "checkIn", "checkOut" }`. Fails if no rooms are left for those dates.
-
-   Bookmark endpoints (send `userId` from login):
-   - `GET /api/bookmarks?userId=...` — saved rooms
-   - `POST /api/bookmarks` — `{ "userId", "roomId" }`
-   - `DELETE /api/bookmarks/:roomId?userId=...` — remove a saved room
-
-4. Start the React client (in a second terminal):
+4. Start the React client (terminal 2):
 
    ```bash
    cd hotel-booking/client
@@ -77,14 +63,16 @@ hotel-booking/
    npm run dev
    ```
 
-   Open [http://localhost:5173](http://localhost:5173). The Vite proxy sends `/api` to the server on port 5000, so keep the API running.
+5. Open the app at [http://localhost:5173](http://localhost:5173).
+   Keep both terminals running. The Vite proxy sends `/api` to port 5000.
 
-   You can register a customer at `/register`, or log in at `/login`. After login, customers go home and admins go to `/admin` (or back to the page they were sent from).
+6. Log in:
+   - **Admin:** `admin@hotel.com` / `admin123` → goes to `/admin` to manage rooms
+   - **Customer:** register at `/register`, then log in at `/login`
 
-   Default admin: `admin@hotel.com` / `admin123`.
-
-   The home page lists rooms with price, sort, and optional date availability. View Details is public. Book and Save send you to login if you are not signed in. The room details page shows the same Save and Book actions.
-
-   Logged-in customers can book at `/book` (room + dates). A popup confirms a successful booking. Saved rooms are at `/bookmarks`, with View Details and Book.
-
-   Admins can manage rooms at `/admin` (add, edit price and other fields, delete). There is no customer management.
+7. Try the flow:
+   - Home (`/`) is public: rooms, price sort, date availability
+   - Room details (`/rooms/:id`) is public
+   - Book and Save require login; guests are sent to `/login` first
+   - Customers book at `/book` (success popup) and see saved rooms at `/bookmarks`
+   - Admins manage rooms at `/admin` (no customer management)
