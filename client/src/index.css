@@ -348,3 +348,27 @@ a:hover {
 .details-card .price {
   margin: 0.35rem 0 0.7rem;
 }
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(27, 58, 75, 0.45);
+  padding: 1.5rem;
+  z-index: 20;
+}
+
+.modal {
+  width: min(420px, 100%);
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.8rem 1.7rem 1.5rem;
+  text-align: center;
+  border-top: 8px solid var(--gold);
+}
+
+.modal h2 {
+  margin-bottom: 0.4rem;
+}

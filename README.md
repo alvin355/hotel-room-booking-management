@@ -84,3 +84,5 @@ hotel-booking/
    Default admin: `admin@hotel.com` / `admin123`.
 
    The home page lists rooms with price, sort, and optional date availability. View Details is public. Book and Save send you to login if you are not signed in. The room details page shows the same Save and Book actions.
+
+   Logged-in customers can book at `/book` (room + dates). A popup confirms a successful booking.
