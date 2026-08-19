@@ -15,18 +15,10 @@ This project is a work in progress. Folders and run commands will be filled in a
 ```
 hotel-booking/
 ├── server/          # Express API + native MongoDB driver
-│   ├── index.js
-│   ├── db.js
-│   ├── seed.js
-│   ├── requireUser.js
-│   ├── availability.js
-│   ├── routes/auth.js
-│   ├── routes/rooms.js
-│   ├── routes/bookings.js
-│   ├── routes/bookmarks.js
-│   ├── .env.example
-│   └── .npmrc
-├── client/          # React + Vite frontend (not added yet)
+├── client/          # React + Vite frontend
+│   ├── src/
+│   ├── index.html
+│   └── vite.config.js
 ├── README.md
 └── .gitignore
 ```
@@ -77,4 +69,14 @@ hotel-booking/
    - `POST /api/bookmarks` — `{ "userId", "roomId" }`
    - `DELETE /api/bookmarks/:roomId?userId=...` — remove a saved room
 
-4. The React client is not added yet. Later: `cd hotel-booking/client`, then `npm install` and `npm run dev`.
+4. Start the React client (in a second terminal):
+
+   ```bash
+   cd hotel-booking/client
+   npm install
+   npm run dev
+   ```
+
+   Open [http://localhost:5173](http://localhost:5173). The Vite proxy sends `/api` to the server on port 5000, so keep the API running.
+
+   Pages so far: navbar and route placeholders. Login, rooms, booking, and admin screens come in later steps.
