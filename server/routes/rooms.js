@@ -1,6 +1,7 @@
 const express = require("express");
 const { getDb } = require("../db");
 const { parseId, requireAdmin } = require("../requireUser");
+const { parseDate, getAvailableCount } = require("../availability");
 
 const router = express.Router();
 
@@ -9,11 +10,25 @@ function rooms() {
   return getDb().collection("rooms");
 }
 
-// List rooms sorted by price (sort=asc or sort=desc). checkIn/checkOut will filter availability once bookings exist.
+// List rooms sorted by price; if checkIn and checkOut are set, only rooms with availability are returned.
 async function listRooms(req, res) {
   const order = req.query.sort === "desc" ? -1 : 1;
   const list = await rooms().find().sort({ price: order }).toArray();
-  res.json(list);
+  const checkIn = parseDate(req.query.checkIn);
+  const checkOut = parseDate(req.query.checkOut);
+
+  if (!checkIn || !checkOut) {
+    return res.json(list);
+  }
+
+  const available = [];
+  for (const room of list) {
+    const availableCount = await getAvailableCount(room, checkIn, checkOut);
+    if (availableCount > 0) {
+      available.push({ ...room, availableCount });
+    }
+  }
+  res.json(available);
 }
 
 // Return one room by id.
@@ -26,6 +41,13 @@ async function getRoom(req, res) {
   const room = await rooms().findOne({ _id: id });
   if (!room) {
     return res.status(404).json({ error: "Room not found" });
+  }
+
+  const checkIn = parseDate(req.query.checkIn);
+  const checkOut = parseDate(req.query.checkOut);
+  if (checkIn && checkOut) {
+    const availableCount = await getAvailableCount(room, checkIn, checkOut);
+    return res.json({ ...room, availableCount });
   }
 
   res.json(room);

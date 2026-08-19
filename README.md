@@ -19,8 +19,10 @@ hotel-booking/
 │   ├── db.js
 │   ├── seed.js
 │   ├── requireUser.js
+│   ├── availability.js
 │   ├── routes/auth.js
 │   ├── routes/rooms.js
+│   ├── routes/bookings.js
 │   ├── .env.example
 │   └── .npmrc
 ├── client/          # React + Vite frontend (not added yet)
@@ -57,12 +59,16 @@ hotel-booking/
    Change these in `server/.env` (`ADMIN_EMAIL`, `ADMIN_PASSWORD`) before the first start if you want different values.
 
    Room endpoints:
-   - `GET /api/rooms` — list rooms. `sort=asc` or `sort=desc` (by price). Optional `checkIn` and `checkOut` (availability comes with bookings).
-   - `GET /api/rooms/:id` — one room
+   - `GET /api/rooms` — list rooms. `sort=asc` or `sort=desc` (by price). Optional `checkIn` and `checkOut` filter to rooms that still have availability.
+   - `GET /api/rooms/:id` — one room. Optional `checkIn` and `checkOut` add `availableCount`.
    - `POST /api/rooms` — admin create. Body: `{ "userId", "name", "description", "price", "quantity", "amenities" }`
    - `PUT /api/rooms/:id` — admin update. Body includes `userId` and any fields to change
    - `DELETE /api/rooms/:id?userId=...` — admin delete
 
    Three sample rooms are inserted if the rooms collection is empty.
+
+   Booking endpoints (send `userId` from login):
+   - `GET /api/bookings?userId=...` — that user's bookings
+   - `POST /api/bookings` — `{ "userId", "roomId", "checkIn", "checkOut" }`. Fails if no rooms are left for those dates.
 
 4. The React client is not added yet. Later: `cd hotel-booking/client`, then `npm install` and `npm run dev`.

@@ -33,4 +33,15 @@ async function requireAdmin(req, res) {
   return user;
 }
 
-module.exports = { parseId, findUserById, requireAdmin };
+// Read userId from the body or query and ensure that user exists.
+async function requireUser(req, res) {
+  const userId = (req.body && req.body.userId) || req.query.userId;
+  const user = await findUserById(userId);
+  if (!user) {
+    res.status(401).json({ error: "Login required" });
+    return null;
+  }
+  return user;
+}
+
+module.exports = { parseId, findUserById, requireAdmin, requireUser };
