@@ -6,17 +6,9 @@ This project is a work in progress. Folders and run commands will be filled in a
 
 ## Required environment
 
-You need these installed on your machine. **Do not use Docker.**
-
 - **Node.js** 18 or later (LTS)
 - **npm** (comes with Node.js)
 - **MongoDB** running locally, or a MongoDB Atlas connection string
-
-You do not need Docker, Mongoose, or any extra tools beyond Node, npm, and MongoDB.
-
-## Do not use Docker
-
-This app is meant to run directly on your computer. Start MongoDB, the API, and the React client with npm. Do not wrap it in Docker.
 
 ## Project structure
 
@@ -25,8 +17,10 @@ hotel-booking/
 ├── server/          # Express API + native MongoDB driver
 │   ├── index.js
 │   ├── db.js
+│   ├── seed.js
+│   ├── routes/auth.js
 │   ├── .env.example
-│   └── .npmrc       # public npm registry
+│   └── .npmrc
 ├── client/          # React + Vite frontend (not added yet)
 ├── README.md
 └── .gitignore
@@ -35,8 +29,6 @@ hotel-booking/
 ---
 
 ## How to run the entire app
-
-Do **not** use Docker.
 
 1. Install **Node.js 18+**.
 2. Start **MongoDB** locally (or use a MongoDB Atlas URI).
@@ -52,6 +44,14 @@ Do **not** use Docker.
 
    The API runs at [http://localhost:5000](http://localhost:5000). Check it with [http://localhost:5000/api/health](http://localhost:5000/api/health). It should return `{ "ok": true, "db": "connected" }`.
 
-4. The React client is not added yet. Later: `cd hotel-booking/client`, then `npm install` and `npm run dev`.
+   Auth endpoints:
+   - `POST /api/auth/register` — `{ "name", "email", "password" }` (customers)
+   - `POST /api/auth/login` — `{ "email", "password" }`
 
-Admin login details will be listed here after the auth step.
+   Default admin (created on first start if missing):
+   - email: `admin@hotel.com`
+   - password: `admin123`
+
+   Change these in `server/.env` (`ADMIN_EMAIL`, `ADMIN_PASSWORD`) before the first start if you want different values.
+
+4. The React client is not added yet. Later: `cd hotel-booking/client`, then `npm install` and `npm run dev`.
