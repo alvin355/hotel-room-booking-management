@@ -22,7 +22,11 @@ This app is meant to run directly on your computer. Start MongoDB, the API, and 
 
 ```
 hotel-booking/
-├── server/          # Express API + native MongoDB driver (not added yet)
+├── server/          # Express API + native MongoDB driver
+│   ├── index.js
+│   ├── db.js
+│   ├── .env.example
+│   └── .npmrc       # public npm registry
 ├── client/          # React + Vite frontend (not added yet)
 ├── README.md
 └── .gitignore
@@ -32,15 +36,22 @@ hotel-booking/
 
 ## How to run the entire app
 
-Full start-to-finish steps will be written here once the server and client exist.
+Do **not** use Docker.
 
-For now:
+1. Install **Node.js 18+**.
+2. Start **MongoDB** locally (or use a MongoDB Atlas URI).
+   - Local default: `mongodb://127.0.0.1:27017/hotel-booking`
+3. Start the API:
 
-1. Install **Node.js 18+** and **MongoDB** (or have an Atlas URI ready).
-2. Do **not** use Docker.
-3. Later steps will add:
-   - `server/` — copy `.env.example` to `.env`, run `npm install` and `npm run dev`
-   - `client/` — run `npm install` and `npm run dev`
-4. Open the app in the browser once those folders are in place.
+   ```bash
+   cd hotel-booking/server
+   cp .env.example .env
+   npm install
+   npm run dev
+   ```
+
+   The API runs at [http://localhost:5000](http://localhost:5000). Check it with [http://localhost:5000/api/health](http://localhost:5000/api/health). It should return `{ "ok": true, "db": "connected" }`.
+
+4. The React client is not added yet. Later: `cd hotel-booking/client`, then `npm install` and `npm run dev`.
 
 Admin login details will be listed here after the auth step.
