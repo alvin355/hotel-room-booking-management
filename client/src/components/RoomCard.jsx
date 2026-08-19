@@ -1,13 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-
-// Send guests to login, or continue if they are already signed in.
-function requireLogin(navigate, isLoggedIn, next) {
-  if (!isLoggedIn) {
-    navigate(`/login?redirect=${encodeURIComponent(next)}`);
-    return false;
-  }
-  return true;
-}
+import { requireLogin } from "../auth/requireLogin";
 
 // One room card with price, bookmark, view details, and book actions.
 export function RoomCard({ room, saved, isLoggedIn, isAdmin, onToggleSave, dates }) {

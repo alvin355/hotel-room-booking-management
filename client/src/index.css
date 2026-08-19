@@ -340,3 +340,11 @@ a:hover {
   flex-wrap: wrap;
   gap: 0.6rem;
 }
+
+.back-link {
+  margin: 0 0 1rem;
+}
+
+.details-card .price {
+  margin: 0.35rem 0 0.7rem;
+}
