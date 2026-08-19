@@ -79,4 +79,6 @@ hotel-booking/
 
    Open [http://localhost:5173](http://localhost:5173). The Vite proxy sends `/api` to the server on port 5000, so keep the API running.
 
-   Pages so far: navbar and route placeholders. Login, rooms, booking, and admin screens come in later steps.
+   You can register a customer at `/register`, or log in at `/login`. After login, customers go home and admins go to `/admin` (or back to the page they were sent from).
+
+   Default admin: `admin@hotel.com` / `admin123`.
