@@ -82,3 +82,5 @@ hotel-booking/
    You can register a customer at `/register`, or log in at `/login`. After login, customers go home and admins go to `/admin` (or back to the page they were sent from).
 
    Default admin: `admin@hotel.com` / `admin123`.
+
+   The home page lists rooms with price, sort, and optional date availability. View Details is public. Book and Save send you to login if you are not signed in.
