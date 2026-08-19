@@ -23,6 +23,7 @@ hotel-booking/
 │   ├── routes/auth.js
 │   ├── routes/rooms.js
 │   ├── routes/bookings.js
+│   ├── routes/bookmarks.js
 │   ├── .env.example
 │   └── .npmrc
 ├── client/          # React + Vite frontend (not added yet)
@@ -70,5 +71,10 @@ hotel-booking/
    Booking endpoints (send `userId` from login):
    - `GET /api/bookings?userId=...` — that user's bookings
    - `POST /api/bookings` — `{ "userId", "roomId", "checkIn", "checkOut" }`. Fails if no rooms are left for those dates.
+
+   Bookmark endpoints (send `userId` from login):
+   - `GET /api/bookmarks?userId=...` — saved rooms
+   - `POST /api/bookmarks` — `{ "userId", "roomId" }`
+   - `DELETE /api/bookmarks/:roomId?userId=...` — remove a saved room
 
 4. The React client is not added yet. Later: `cd hotel-booking/client`, then `npm install` and `npm run dev`.

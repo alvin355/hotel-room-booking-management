@@ -122,6 +122,7 @@ async function deleteRoom(req, res) {
     return res.status(404).json({ error: "Room not found" });
   }
 
+  await getDb().collection("bookmarks").deleteMany({ roomId: id });
   res.json({ ok: true });
 }
 

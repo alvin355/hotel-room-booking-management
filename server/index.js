@@ -6,6 +6,7 @@ const { seedAdmin, seedRooms } = require("./seed");
 const authRoutes = require("./routes/auth");
 const roomRoutes = require("./routes/rooms");
 const bookingRoutes = require("./routes/bookings");
+const bookmarkRoutes = require("./routes/bookmarks");
 
 const app = express();
 app.use(express.json());
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/bookmarks", bookmarkRoutes);
 
 // Ping MongoDB and return whether the API and database are up.
 async function health(req, res) {
