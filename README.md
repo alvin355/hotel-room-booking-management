@@ -18,7 +18,9 @@ hotel-booking/
 │   ├── index.js
 │   ├── db.js
 │   ├── seed.js
+│   ├── requireUser.js
 │   ├── routes/auth.js
+│   ├── routes/rooms.js
 │   ├── .env.example
 │   └── .npmrc
 ├── client/          # React + Vite frontend (not added yet)
@@ -53,5 +55,14 @@ hotel-booking/
    - password: `admin123`
 
    Change these in `server/.env` (`ADMIN_EMAIL`, `ADMIN_PASSWORD`) before the first start if you want different values.
+
+   Room endpoints:
+   - `GET /api/rooms` — list rooms. `sort=asc` or `sort=desc` (by price). Optional `checkIn` and `checkOut` (availability comes with bookings).
+   - `GET /api/rooms/:id` — one room
+   - `POST /api/rooms` — admin create. Body: `{ "userId", "name", "description", "price", "quantity", "amenities" }`
+   - `PUT /api/rooms/:id` — admin update. Body includes `userId` and any fields to change
+   - `DELETE /api/rooms/:id?userId=...` — admin delete
+
+   Three sample rooms are inserted if the rooms collection is empty.
 
 4. The React client is not added yet. Later: `cd hotel-booking/client`, then `npm install` and `npm run dev`.

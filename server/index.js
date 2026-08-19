@@ -2,9 +2,15 @@ require("dotenv").config();
 
 const express = require("express");
 const { connect, getDb } = require("./db");
+const { seedAdmin, seedRooms } = require("./seed");
+const authRoutes = require("./routes/auth");
+const roomRoutes = require("./routes/rooms");
 
 const app = express();
 app.use(express.json());
+
+app.use("/api/auth", authRoutes);
+app.use("/api/rooms", roomRoutes);
 
 // Ping MongoDB and return whether the API and database are up.
 async function health(req, res) {
@@ -20,8 +26,10 @@ app.get("/api/health", health);
 
 const port = process.env.PORT || 5000;
 
-// Start the HTTP server after MongoDB is connected.
-function startServer() {
+// Seed admin and sample rooms, then start the HTTP server.
+async function startServer() {
+  await seedAdmin();
+  await seedRooms();
   app.listen(port, onListening);
 }
 
