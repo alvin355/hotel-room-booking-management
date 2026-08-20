@@ -28,7 +28,7 @@ async function health(req, res) {
 
 app.get("/api/health", health);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 // Seed admin and sample rooms, then start the HTTP server.
 async function startServer() {

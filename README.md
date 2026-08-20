@@ -34,8 +34,47 @@ hotel-booking/
 
 1. Install **Node.js 18+**.
 
-2. Start **MongoDB** locally, or have a MongoDB Atlas URI ready.
-   - Local database URI: `mongodb://127.0.0.1:27017/hotel-booking`
+2. Start **MongoDB**. The API stores users, rooms, bookings, and bookmarks in MongoDB, so this must be running first.
+
+   **MongoDB Atlas (free cloud database)**
+
+   Use this if you do not want to install MongoDB locally. Atlas hosts the database on the internet. Your app on your computer still talks to it through the URI in `.env`.
+
+   1. Go to [https://www.mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas) and create a free account (or log in).
+   2. Create a project if Atlas asks for one, then click **Create** / **Build a Database**.
+   3. Choose the **M0 Free** cluster. Pick a cloud provider and a region close to you, then create the cluster. Wait until it finishes (usually a minute or two).
+   4. **Database user:** Atlas will ask you to create a username and password for the database (this is not your Atlas login). Save the password. Avoid special characters like `@`, `#`, or `/` in the password, or you will have to URL-encode them in the URI.
+   5. **Network access:** add your current IP so your computer is allowed to connect. For local homework/testing you can click **Allow Access from Anywhere**, which uses `0.0.0.0/0`.
+   6. On the cluster, click **Connect** → **Drivers**. Choose **Node.js**. Copy the connection string. It looks like:
+
+      ```
+      mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+      ```
+
+   7. Edit that string:
+      - Replace `<password>` with the database user password from step 4.
+      - Put `/hotel-booking` before the `?` so the app uses that database name, for example:
+
+      ```
+      mongodb+srv://myUser:myPassword@cluster0.xxxxx.mongodb.net/hotel-booking?retryWrites=true&w=majority
+      ```
+
+   8. In `hotel-booking/server`, copy `.env.example` to `.env` if you have not already, then set:
+
+      ```
+      MONGODB_URI=mongodb+srv://myUser:myPassword@cluster0.xxxxx.mongodb.net/hotel-booking?retryWrites=true&w=majority
+      ```
+
+   Keep the rest of `.env` (`PORT`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`) as they are.
+
+   If `npm run dev` prints **Server selection timed out after 30000 ms**, the URI is fine but Atlas is refusing the connection. Fix it in Atlas:
+
+   1. Open your cluster → **Network Access**.
+   2. Click **Add IP Address**.
+   3. For local testing, click **Allow Access from Anywhere** (`0.0.0.0/0`) and confirm.
+   4. Wait about a minute, then run `npm run dev` again.
+
+   Also check: the cluster is not paused (click **Resume** if Atlas shows that), and you are not on a VPN that blocks outbound MongoDB.
 
 3. Start the API (terminal 1):
 
@@ -46,8 +85,10 @@ hotel-booking/
    npm run dev
    ```
 
-   The API is at [http://localhost:5000](http://localhost:5000).
-   Open [http://localhost:5000/api/health](http://localhost:5000/api/health) — it should return `{ "ok": true, "db": "connected" }`.
+   The API is at [http://localhost:5001](http://localhost:5001).
+   Open [http://localhost:5001/api/health](http://localhost:5001/api/health) — it should return `{ "ok": true, "db": "connected" }`.
+
+   On macOS, port 5000 is often already used by **AirPlay Receiver** (Control Center). This project uses **5001** so it does not clash. If you still see `EADDRINUSE`, change `PORT` in `server/.env` to another free port and match it in `client/vite.config.js`.
 
    On first start, the server creates:
    - an admin user from `server/.env` (`ADMIN_EMAIL`, `ADMIN_PASSWORD`)
@@ -64,7 +105,7 @@ hotel-booking/
    ```
 
 5. Open the app at [http://localhost:5173](http://localhost:5173).
-   Keep both terminals running. The Vite proxy sends `/api` to port 5000.
+   Keep both terminals running. The Vite proxy sends `/api` to port 5001.
 
 6. Log in:
    - **Admin:** `admin@hotel.com` / `admin123` → goes to `/admin` to manage rooms
