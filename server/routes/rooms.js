@@ -62,7 +62,9 @@ async function createRoom(req, res) {
 
   const { name, description, price, quantity, amenities } = req.body || {};
   if (!name || price === undefined || quantity === undefined) {
-    return res.status(400).json({ error: "name, price, and quantity are required" });
+    return res
+      .status(400)
+      .json({ error: "name, price, and quantity are required" });
   }
 
   const room = {

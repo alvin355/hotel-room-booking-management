@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { del, get, post } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { requireLogin } from "../auth/requireLogin";
@@ -156,10 +161,18 @@ export function RoomDetails() {
           {error && <p className="error">{error}</p>}
           {!isAdmin && (
             <div className="room-actions">
-              <button className="btn btn-outline" type="button" onClick={handleSave}>
+              <button
+                className="btn btn-outline"
+                type="button"
+                onClick={handleSave}
+              >
                 {saved ? "Saved" : "Save"}
               </button>
-              <button className="btn btn-primary" type="button" onClick={handleBook}>
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={handleBook}
+              >
                 Book
               </button>
             </div>

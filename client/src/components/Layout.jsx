@@ -9,7 +9,7 @@ export function Layout() {
     <div className="layout">
       <nav className="navbar">
         <Link className="brand" to="/">
-          Harbor House <span>Hotel</span>
+          Blue Sky <span>Hotel</span>
         </Link>
         <div className="nav-links">
           <NavLink to="/">Rooms</NavLink>
@@ -18,7 +18,9 @@ export function Layout() {
           {isAdmin && <NavLink to="/admin">Admin</NavLink>}
           {!isLoggedIn && <NavLink to="/login">Login</NavLink>}
           {!isLoggedIn && <NavLink to="/register">Register</NavLink>}
-          {isLoggedIn && <span className="nav-user">{user.name}</span>}
+          {isLoggedIn && !isAdmin && (
+            <span className="nav-user">{user.name}</span>
+          )}
           {isLoggedIn && (
             <button type="button" onClick={logout}>
               Logout
